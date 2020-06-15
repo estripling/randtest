@@ -24,7 +24,7 @@ setup(
     long_description=long_desc,
     long_description_content_type="text/markdown",
     url="https://github.com/estripling/randtest",
-    python_requires=">= 3.7",
+    python_requires=">= 3.6",
     packages=find_packages(),
     license="MIT",
     entry_points={
@@ -37,5 +37,5 @@ setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-    ]
+    ],
 )

@@ -20,7 +20,7 @@ from itertools import combinations
 from statistics import mean
 
 
-class RandTestResult():
+class RandTestResult:
     """
     RandTestResult class
 
@@ -58,15 +58,16 @@ class RandTestResult():
     """
 
     def __init__(
-            self,
-            method: str,
-            alternative: str,
-            mcta: float,
-            mctb: float,
-            statistic: float,
-            num_successes=0,
-            num_permutations=0,
-            seed=None):
+        self,
+        method: str,
+        alternative: str,
+        mcta: float,
+        mctb: float,
+        statistic: float,
+        num_successes=0,
+        num_permutations=0,
+        seed=None,
+    ):
         self._method = method
         self._alternative = alternative
         self._mcta = mcta
@@ -122,22 +123,20 @@ class RandTestResult():
         return self._seed
 
     def __repr__(self):
-        repr_string = "{}".format(
-            self.__class__,
-        )
+        repr_string = "{}".format(self.__class__)
         return repr_string
 
     def __str__(self):
         print_string = (
-            "{}\n" +
-            "Method = {}\n" +
-            "Alternative = {}\n" +
-            "MCT(data of group A) = {:g}\n" +
-            "MCT(data of group B) = {:g}\n" +
-            "Observed test statistic value = {:g}\n" +
-            "Number of successes = {:d}\n" +
-            "Number of permutations = {:d}\n" +
-            "p value = {:g}\n"
+            "{}\n"
+            + "Method = {}\n"
+            + "Alternative = {}\n"
+            + "MCT(data of group A) = {:g}\n"
+            + "MCT(data of group B) = {:g}\n"
+            + "Observed test statistic value = {:g}\n"
+            + "Number of successes = {:d}\n"
+            + "Number of permutations = {:d}\n"
+            + "p value = {:g}\n"
             "seed = {}"
         ).format(
             self.__class__,
@@ -160,22 +159,21 @@ class RandTest:
 
     Carries out the computation of a randomization test.
     """
-    def __init__(self,
-                 data_group_a,
-                 data_group_b,
-                 mct,
-                 tstat,
-                 num_permutations,
-                 alternative,
-                 n_jobs,
-                 seed):
+
+    def __init__(
+        self,
+        data_group_a,
+        data_group_b,
+        mct,
+        tstat,
+        num_permutations,
+        alternative,
+        n_jobs,
+        seed,
+    ):
         self.mct = mct
         self.tstat = tstat
-        self.method = (
-            "Monte Carlo"
-            if num_permutations > 1 else
-            "Systematic"
-        )
+        self.method = "Monte Carlo" if num_permutations > 1 else "Systematic"
         self.alternative = alternative
         self.njobs = n_jobs
         self.rng = check_random_state(seed)
@@ -190,11 +188,7 @@ class RandTest:
 
     def compute_test_statistic(self, idx_group_a) -> bool:
         """Function to the multiprocessing computation of the test statistic"""
-        idx_group_b = (
-            i
-            for i in range(self.n_data)
-            if i not in idx_group_a
-        )
+        idx_group_b = (i for i in range(self.n_data) if i not in idx_group_a)
         tval = self.tstat(
             (self.data[i] for i in idx_group_a),
             (self.data[j] for j in idx_group_b),
@@ -214,8 +208,9 @@ class RandTest:
             self.num_permutations = 0
             with mp.Pool(self.njobs) as pool:
                 for is_success in pool.imap_unordered(
-                        self.compute_test_statistic,
-                        combinations(range(self.n_data), self.n_x)):
+                    self.compute_test_statistic,
+                    combinations(range(self.n_data), self.n_x),
+                ):
                     self.num_permutations += 1
                     self.num_successes += int(is_success)
                     self._log_progress()
@@ -224,8 +219,8 @@ class RandTest:
             self.num_successes += 1
             with mp.Pool(self.njobs) as pool:
                 for is_success in pool.imap_unordered(
-                        self.compute_test_statistic,
-                        self._get_random_indices()):
+                    self.compute_test_statistic, self._get_random_indices()
+                ):
                     self.num_successes += int(is_success)
                     self._log_progress()
 
@@ -246,9 +241,8 @@ class RandTest:
 
 
 def test_statistic(
-        data_group_a: GeneratorType,
-        data_group_b: GeneratorType,
-        mct: FunctionType) -> float:
+    data_group_a: GeneratorType, data_group_b: GeneratorType, mct: FunctionType
+) -> float:
     """Compute test statistic: Difference between MCTs"""
     return mct(data_group_a) - mct(data_group_b)
 
@@ -268,22 +262,24 @@ def check_random_state(seed):
         rng = seed
     else:
         raise ValueError(
-            "### error: '{}' cannot be used to seed random.Random instance."
-            .format(seed)
+            "### error: '{}' cannot be used to seed random.Random instance.".format(
+                seed
+            )
         )
     return rng
 
 
 def randtest(
-        data_group_a,
-        data_group_b,
-        mct=mean,
-        tstat=test_statistic,
-        num_permutations=10000,
-        alternative="two_sided",
-        num_jobs=1,
-        log_level="warn",
-        seed=None):
+    data_group_a,
+    data_group_b,
+    mct=mean,
+    tstat=test_statistic,
+    num_permutations=10000,
+    alternative="two_sided",
+    num_jobs=1,
+    log_level="warn",
+    seed=None,
+):
     """
     Perform a randomization test with custom test statistic.
 
@@ -363,15 +359,19 @@ def randtest(
     assert isinstance(num_permutations, int) and num_permutations != 0
     if num_permutations < 0:
         assert num_permutations == -1
-    assert (
-        isinstance(alternative, str) and
-        alternative in ["two_sided", "greater", "less"]
-    )
+    assert isinstance(alternative, str) and alternative in [
+        "two_sided",
+        "greater",
+        "less",
+    ]
     assert isinstance(num_jobs, int) and num_jobs != 0
-    assert (
-        isinstance(log_level, str) and
-        log_level in ["debug", "info", "warn", "error", "critical"]
-    )
+    assert isinstance(log_level, str) and log_level in [
+        "debug",
+        "info",
+        "warn",
+        "error",
+        "critical",
+    ]
     log_levels = {
         "debug": logging.DEBUG,
         "info": logging.INFO,
@@ -382,11 +382,11 @@ def randtest(
     logging.basicConfig(
         level=log_levels.get(log_level, logging.WARNING),
         format=(
-            "%(levelname)s :: " +
-            "%(name)s :: " +
-            "pid = %(process)d :: " +
-            "%(asctime)s :: " +
-            "%(message)s"
+            "%(levelname)s :: "
+            + "%(name)s :: "
+            + "pid = %(process)d :: "
+            + "%(asctime)s :: "
+            + "%(message)s"
         ),
         #  datefmt='%Y-%m-%d %H:%M:%S'
     )
@@ -396,9 +396,9 @@ def randtest(
         n_jobs = num_jobs
         if num_jobs > max_cores:
             logging.warning(
-                "Specified number of jobs (%d) is larger than the " +
-                "maximum number of cores (%d). " +
-                "Setting number of jobs to %d.",
+                "Specified number of jobs (%d) is larger than the "
+                + "maximum number of cores (%d). "
+                + "Setting number of jobs to %d.",
                 num_jobs,
                 max_cores,
                 max_cores,
@@ -408,9 +408,9 @@ def randtest(
         n_jobs = max_cores + num_jobs + 1
         if n_jobs <= 0:
             logging.warning(
-                "Specified number of jobs (%d) goes beyond " +
-                "the maximum number of cores (%d). " +
-                "Setting number of jobs to %d.",
+                "Specified number of jobs (%d) goes beyond "
+                + "the maximum number of cores (%d). "
+                + "Setting number of jobs to %d.",
                 num_jobs,
                 max_cores,
                 max_cores,

@@ -218,7 +218,6 @@ Run the `example_smart_drug.py` script as follows:
 
 ```{bash}
 $ make example_smart_drug
-python3 examples/smart_drug.py
 [...]
 MCT = Arithmetic Mean
 <class 'randtest.base.RandTestResult'>

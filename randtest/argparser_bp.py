@@ -10,19 +10,14 @@ from randtest import __version__
 
 def read_data(ifname):
     """Read in data: assuming no header, only numbers"""
-    with open(ifname, 'r') as fobj:
-        data = (
-            ast.literal_eval(num.strip())
-            for num in fobj.readlines()
-        )
+    with open(ifname, "r") as fobj:
+        data = (ast.literal_eval(num.strip()) for num in fobj.readlines())
     return data
 
 
 def argparse_cli(description):
     """argparse boilerplate code"""
-    parser = argparse.ArgumentParser(
-        description=textwrap.dedent(description)
-    )
+    parser = argparse.ArgumentParser(description=textwrap.dedent(description))
     parser.add_argument(
         "-v",
         "--version",
@@ -36,21 +31,21 @@ def argparse_cli(description):
         type=str,
         choices=["two_sided", "greater", "less"],
         default="two_sided",
-        help="alternative hypothesis (default: 'two_sided')."
+        help="alternative hypothesis (default: 'two_sided').",
     )
     parser.add_argument(
         "-p",
         metavar="num_permutations",
         type=int,
         default=10000,
-        help="number of permutations (default: 10000)."
+        help="number of permutations (default: 10000).",
     )
     parser.add_argument(
         "-n",
         metavar="num_jobs",
         type=int,
         default=1,
-        help="number of jobs (default: 1)."
+        help="number of jobs (default: 1).",
     )
     parser.add_argument(
         "-l",
@@ -58,7 +53,7 @@ def argparse_cli(description):
         type=str,
         choices=["debug", "info", "warn", "error", "critical"],
         default="warn",
-        help="set log level (default: 'warn')."
+        help="set log level (default: 'warn').",
     )
     parser.add_argument(
         "-s",
@@ -69,13 +64,9 @@ def argparse_cli(description):
     )
 
     parser.add_argument(
-        "fname_data_A",
-        type=str,
-        help="file name group A data.",
+        "fname_data_A", type=str, help="file name group A data.",
     )
     parser.add_argument(
-        "fname_data_B",
-        type=str,
-        help="file name group B data.",
+        "fname_data_B", type=str, help="file name group B data.",
     )
     return parser

@@ -15,7 +15,7 @@ def arithmetic_mean(data: GeneratorType) -> float:
     return sum_data_pnts / num_data_pnts
 
 
-def trimmed_mean(data: GeneratorType, trim_percent=.2) -> float:
+def trimmed_mean(data: GeneratorType, trim_percent=0.2) -> float:
     """Trimmed mean computed on generator object"""
     data_sorted = tuple(sorted(data))
     num_data_pnts = len(data_sorted)

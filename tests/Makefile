@@ -1,6 +1,13 @@
 # Global parameters
 SHELL := /bin/bash
-PYEXE := python3
+PYEXE = python3
+
+# Function to run Python in virtual environment,
+# needed for testing CLI functions.
+define pyvenv
+source ../venv/bin/activate; $(PYEXE) -m unittest ${1}; deactivate;
+endef
+
 
 # Main
 .PHONY: all help program
@@ -14,7 +21,7 @@ program:
 	@echo "make help"
 
 
-## tests:  Run tests
+## tests ::  Run tests
 .PHONY: tests
 tests:
-	$(PYEXE) -m unittest test_randtest
+	$(call pyvenv, test_randtest)

@@ -22,7 +22,7 @@ def main():
         type=int,
         choices=range(0, 50),
         default=20,
-        help="value in percent used for trimming (default: 20)."
+        help="value in percent used for trimming (default: 20).",
     )
     args = parser.parse_args()
     alpha = args.t / 100
@@ -41,9 +41,10 @@ def main():
         alternative=args.a,
         num_jobs=args.n,
         log_level=args.l,
-        seed=args.s)
+        seed=args.s,
+    )
     print(result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

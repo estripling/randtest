@@ -13,4 +13,4 @@ from .base import randtest
 
 __author__ = "E. Stripling"
 __email__ = "estripling042@gmail.com"
-__version__ = "0.0.1"
+__version__ = "0.0.2"

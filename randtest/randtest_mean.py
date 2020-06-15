@@ -27,9 +27,10 @@ def main():
         alternative=args.a,
         num_jobs=args.n,
         log_level=args.l,
-        seed=args.s)
+        seed=args.s,
+    )
     print(result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
