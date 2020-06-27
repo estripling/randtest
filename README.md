@@ -12,18 +12,16 @@ independent groups as described in:
 
 ### Requirements
 
-* Python 3
+* At least, Python 3.6
 
 
 ### Installation
 
-To install the `randtest` package, run the following on the command line:
+* `pip` install the `randtest` library with:
 
-```{bash}
-$ make install
-```
-
-This will `pip` install the package in your activated Python environment.
+  ```{bash}
+  pip install git+https://github.com/estripling/randtest
+  ```
 
 
 ### Highlights
