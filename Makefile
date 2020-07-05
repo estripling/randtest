@@ -1,8 +1,8 @@
 # Global parameters
 SHELL := /bin/bash
-PYPATH := /usr/bin/python3.6
-PYEXE := $${PWD}/venv/bin/python
-PGK_NAME = randtest
+PYPATH := /usr/bin/python3
+PYEXE := $(PWD)/venv/bin/python
+PGKNAME := randtest
 
 # Main
 .PHONY: all help program
@@ -19,7 +19,7 @@ program:
 ## venv ::  Create virtual Python enviroment
 .PHONY: venv
 venv:
-	$(PYPATH) -m venv $${PWD}/venv
+	$(PYPATH) -m venv $(PWD)/venv
 
 
 ## rmvenv ::  Remove venv/ directory
@@ -43,14 +43,14 @@ develop:
 ## uninstall ::  Uninstall (development) package
 .PHONY: uninstall
 uninstall:
-	$(PYEXE) -m pip uninstall --yes $(PGK_NAME)
+	$(PYEXE) -m pip uninstall --yes $(PGKNAME)
 
 
 ## dev-uninstall ::  Uninstall (development) package
 .PHONY: dev-uninstall
 dev-uninstall:
-	$(PYEXE) -m pip uninstall --yes $(PGK_NAME)
-	rm -r $(PGK_NAME).egg-info
+	$(PYEXE) -m pip uninstall --yes $(PGKNAME)
+	rm -r $(PGKNAME).egg-info
 
 
 ## example-smart-drug ::  Run the smart drug example
@@ -62,10 +62,19 @@ example-smart-drug:
 ## tests ::  Run tests
 .PHONY: tests
 tests:
-	cd tests/; make tests; cd -
+	cd tests/ && make tests && cd -
 
 
 ## rmdir ::  Remove __pychache__ directories
 .PHONY: rmdir
 rmdir:
 	find . -name __pycache__ -type d -exec rm -rf {} +
+
+
+## vars :: Echo variables
+.PHONY: vars
+vars:
+	@echo SHELL: $(SHELL)
+	@echo PYPATH: $(PYPATH)
+	@echo PYEXE: $(PYEXE)
+	@echo PGKNAME: $(PGKNAME)
